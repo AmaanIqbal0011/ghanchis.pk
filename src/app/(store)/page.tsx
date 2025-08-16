@@ -1,3 +1,4 @@
+import CategoryBanner from "@/components/myComponents/categoryBanner";
 import HeroSection from "@/components/myComponents/heroSection";
 import ProductView from "@/components/myComponents/productView";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
@@ -16,6 +17,7 @@ export default async function Home() {
      
       <HeroSection />
       <hr className="border-t border-gray-300 my-4" />
+      <CategoryBanner />
       <ProductView products={products} size={size} />
     
     </div>
