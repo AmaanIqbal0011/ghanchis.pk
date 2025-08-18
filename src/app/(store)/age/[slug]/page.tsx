@@ -5,12 +5,13 @@ import { getProductsByAgeGroup } from "@/sanity/lib/products/getProductByAgeGrou
 
 
 async function SizePage (
-{params} : {params : Promise<{slug : number}>}
+{params} : {params : Promise<{slug : string}>}
 ) {
   
   const {slug} = await params;
   const products  = await getProductsByAgeGroup(slug)
   const size = await getAllSize()
+  
 
   return (
     <div className="flex flex-col items-center justify-top min-h-screen bg-gray-100 p-4">

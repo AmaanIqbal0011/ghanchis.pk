@@ -13,6 +13,17 @@
  */
 
 // Source: schema.json
+export type Article = {
+  _id: string;
+  _type: "article";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  slug?: Slug;
+  description?: string;
+};
+
 export type HeroSection = {
   _id: string;
   _type: "heroSection";
@@ -67,26 +78,54 @@ export type Order = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  orderNumber?: string;
-  customerName?: string;
-  clerkUserId?: string;
-  customerEmail?: string;
-  shippingAddress?: string;
-  products?: Array<{
-    product?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "product";
-    };
+  orderId?: string;
+  userInfo?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    address?: string;
+    city?: string;
+    country?: string;
+    phoneNumber?: string;
+    paymentMethod?: string;
+    clerkId?: string;
+  };
+  basket?: Array<{
     quantity?: number;
-    size?: string;
+    product?: {
+      name?: string;
+      price?: number;
+      image?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      size?: {
+        ageGroup?: string;
+        chest?: number;
+        fitting?: string;
+        kameezLength?: number;
+        name?: string;
+        paienchaWidth?: number;
+        shalwarLength?: number;
+        shoulder?: number;
+        sleevesLength?: number;
+        sleevesStyle?: string;
+      };
+    };
+    _type: "basketItem";
     _key: string;
   }>;
-  totalAmount?: number;
-  amountDiscount?: number;
-  status?: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  orderDate?: string;
+  totalPrice?: number;
+  timestamp?: string;
+  status?: "pending" | "completed";
 };
 
 export type Category = {
@@ -122,13 +161,19 @@ export type Product = {
   };
   price?: number;
   oldPrice?: number;
-  description?: string;
   category?: Array<{
     _ref: string;
     _type: "reference";
     _weak?: boolean;
     _key: string;
     [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  article?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "article";
   }>;
   collections?: Array<{
     _ref: string;
@@ -143,7 +188,9 @@ export type Product = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "size";
   };
-  colors?: Array<string>;
+  colors?: Array<{
+    _key: string;
+  } & Color>;
   stock?: number;
   featured?: boolean;
   tags?: Array<string>;
@@ -159,7 +206,7 @@ export type Size = {
   _updatedAt: string;
   _rev: string;
   name?: string;
-  ageGroup?: string;
+  ageGroup?: Array<string>;
   slug?: Slug;
   kameezLength?: number;
   sleevesLength?: number;
@@ -169,7 +216,39 @@ export type Size = {
   shalwarLength?: number;
   paienchaWidth?: number;
   sleevesStyle?: "golla" | "cuff" | "straight" | "none";
-  description?: string;
+};
+
+export type Color = {
+  _type: "color";
+  hex?: string;
+  alpha?: number;
+  hsl?: HslaColor;
+  hsv?: HsvaColor;
+  rgb?: RgbaColor;
+};
+
+export type RgbaColor = {
+  _type: "rgbaColor";
+  r?: number;
+  g?: number;
+  b?: number;
+  a?: number;
+};
+
+export type HsvaColor = {
+  _type: "hsvaColor";
+  h?: number;
+  s?: number;
+  v?: number;
+  a?: number;
+};
+
+export type HslaColor = {
+  _type: "hslaColor";
+  h?: number;
+  s?: number;
+  l?: number;
+  a?: number;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -290,7 +369,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = HeroSection | Sale | CollectionType | Order | Category | Product | Size | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Article | HeroSection | Sale | CollectionType | Order | Category | Product | Size | Color | RgbaColor | HsvaColor | HslaColor | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/products/getAllCategories.ts
 // Variable: ALL_CATEGORIES_QUERY
@@ -321,6 +400,28 @@ export type ALL_COLLECTION_QUERYResult = Array<{
   showOnCollectionsPage?: boolean;
 }>;
 
+// Source: ./src/sanity/lib/products/getAllSize.ts
+// Variable: ALL_SIZE_QUERY
+// Query: *[            _type == "size"        ] | order(title asc)        //  {        //     name,        // }
+export type ALL_SIZE_QUERYResult = Array<{
+  _id: string;
+  _type: "size";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  ageGroup?: Array<string>;
+  slug?: Slug;
+  kameezLength?: number;
+  sleevesLength?: number;
+  shoulder?: number;
+  fitting?: "loose" | "regular" | "slim";
+  chest?: number;
+  shalwarLength?: number;
+  paienchaWidth?: number;
+  sleevesStyle?: "cuff" | "golla" | "none" | "straight";
+}>;
+
 // Source: ./src/sanity/lib/products/getHeroImages.ts
 // Variable: ALL_HEROIMAGES_QUERY
 // Query: *[_type == "heroSection"]{  "imageUrl": image.asset->url,  alt}
@@ -329,15 +430,59 @@ export type ALL_HEROIMAGES_QUERYResult = Array<{
   alt: string | null;
 }>;
 
-// Source: ./src/sanity/lib/products/getProductBySize.ts
-// Variable: PRODUCT_BY_SIZE
-// Query: *[_type == "product" && size->ageGroup == $ageGroup] {  _id,  title,  slug,  price,  image,  size->{    _id,    name,    ageGroup,    slug  }}
-export type PRODUCT_BY_SIZEResult = Array<{
+// Source: ./src/sanity/lib/products/getOrderById.ts
+// Variable: PRODUCT_BY_ORDER_ID
+// Query: *[_type == "order" && orderId == $orderId]{  orderId,  userInfo,  totalPrice,  status,  basket[]{    quantity,    product{      name,      price,      "imageUrl": image.asset->url,      size{        ageGroup,        chest,        fitting,        kameezLength,        name,        paienchaWidth,        shalwarLength,        shoulder,        sleevesLength,        sleevesStyle      }    }  },  totalPrice,  timestamp}
+export type PRODUCT_BY_ORDER_IDResult = Array<{
+  orderId: string | null;
+  userInfo: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    address?: string;
+    city?: string;
+    country?: string;
+    phoneNumber?: string;
+    paymentMethod?: string;
+    clerkId?: string;
+  } | null;
+  totalPrice: number | null;
+  status: "completed" | "pending" | null;
+  basket: Array<{
+    quantity: number | null;
+    product: {
+      name: string | null;
+      price: number | null;
+      imageUrl: string | null;
+      size: {
+        ageGroup: string | null;
+        chest: number | null;
+        fitting: string | null;
+        kameezLength: number | null;
+        name: string | null;
+        paienchaWidth: number | null;
+        shalwarLength: number | null;
+        shoulder: number | null;
+        sleevesLength: number | null;
+        sleevesStyle: string | null;
+      } | null;
+    } | null;
+  }> | null;
+  timestamp: string | null;
+}>;
+
+// Source: ./src/sanity/lib/products/getProductByAgeGroup.ts
+// Variable: PRODUCT_BY_AGE
+// Query: *[_type == "product" && $ageGroup in size->ageGroup[]] {      ...    }
+export type PRODUCT_BY_AGEResult = Array<{
   _id: string;
-  title: string | null;
-  slug: Slug | null;
-  price: number | null;
-  image: {
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  image?: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -348,13 +493,45 @@ export type PRODUCT_BY_SIZEResult = Array<{
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
-  } | null;
-  size: {
-    _id: string;
-    name: string | null;
-    ageGroup: string | null;
-    slug: Slug | null;
-  } | null;
+  };
+  price?: number;
+  oldPrice?: number;
+  category?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  article?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "article";
+  }>;
+  collections?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "collectionType";
+  }>;
+  size?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "size";
+  };
+  colors?: Array<{
+    _key: string;
+  } & Color>;
+  stock?: number;
+  featured?: boolean;
+  tags?: Array<string>;
+  sku?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }>;
 
 // Source: ./src/sanity/lib/products/getProductBySlug.ts
@@ -368,7 +545,9 @@ export type PRODUCT_BY_SLUGResult = {
   oldPrice: number | null;
   stock: number | null;
   images: null;
-  colors: Array<string> | null;
+  colors: Array<{
+    _key: string;
+  } & Color> | null;
   featured: boolean | null;
   sku: string | null;
   size: {
@@ -384,6 +563,15 @@ export type PRODUCT_BY_SLUGResult = {
     title: string | null;
   }> | null;
 } | null;
+
+// Source: ./src/sanity/lib/products/getProductColor.ts
+// Variable: ALL_PRODUCTS_QUERY
+// Query: *[_type == "product"] | order(title asc) {  colors}
+export type ALL_PRODUCTS_QUERYResult = Array<{
+  colors: Array<{
+    _key: string;
+  } & Color> | null;
+}>;
 
 // Source: ./src/sanity/lib/products/searchProductByName.ts
 // Variable: PRODUCT_SEARCH_QUERY
@@ -410,13 +598,19 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
   };
   price?: number;
   oldPrice?: number;
-  description?: string;
   category?: Array<{
     _ref: string;
     _type: "reference";
     _weak?: boolean;
     _key: string;
     [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  article?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "article";
   }>;
   collections?: Array<{
     _ref: string;
@@ -431,7 +625,9 @@ export type PRODUCT_SEARCH_QUERYResult = Array<{
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "size";
   };
-  colors?: Array<string>;
+  colors?: Array<{
+    _key: string;
+  } & Color>;
   stock?: number;
   featured?: boolean;
   tags?: Array<string>;
@@ -464,9 +660,12 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "\n        *[\n            _type == \"category\"\n        ] | order(title asc)\n        ": ALL_CATEGORIES_QUERYResult;
     "\n        *[\n            _type == \"collectionType\"\n        ] | order(title asc)\n        ": ALL_COLLECTION_QUERYResult;
+    "\n        *[\n            _type == \"size\"\n        ] | order(title asc)\n        //  {\n        //     name,\n        // }\n        ": ALL_SIZE_QUERYResult;
     "\n        *[_type == \"heroSection\"]{\n  \"imageUrl\": image.asset->url,\n  alt\n}\n\n": ALL_HEROIMAGES_QUERYResult;
-    "\n  *[_type == \"product\" && size->ageGroup == $ageGroup] {\n  _id,\n  title,\n  slug,\n  price,\n  image,\n  size->{\n    _id,\n    name,\n    ageGroup,\n    slug\n  }\n}\n\n\n    ": PRODUCT_BY_SIZEResult;
+    "*[_type == \"order\" && orderId == $orderId]{\n  orderId,\n  userInfo,\n  totalPrice,\n  status,\n  basket[]{\n    quantity,\n    product{\n      name,\n      price,\n      \"imageUrl\": image.asset->url,\n      size{\n        ageGroup,\n        chest,\n        fitting,\n        kameezLength,\n        name,\n        paienchaWidth,\n        shalwarLength,\n        shoulder,\n        sleevesLength,\n        sleevesStyle\n      }\n    }\n  },\n  totalPrice,\n  timestamp\n}": PRODUCT_BY_ORDER_IDResult;
+    "\n    *[_type == \"product\" && $ageGroup in size->ageGroup[]] {\n      ...\n    }\n  ": PRODUCT_BY_AGEResult;
     "\n    *[_type == \"product\" && slug.current == $slug][0]{\n    _id,\n    title,\n    slug,\n    price,\n    oldPrice,\n    stock,\n    images,\n    colors,\n    featured,\n    sku,\n\n    // references:\n    \"size\": size->{\n      _id,\n      name\n    },\n    \"categories\": category[]->{\n      _id,\n      name,\n    },\n    \"collectionType\": collections[]->{\n      _id,\n      title,\n    }\n  }\n    ": PRODUCT_BY_SLUGResult;
+    "\n   *[_type == \"product\"] | order(title asc) {\n  colors\n}\n\n\n  ": ALL_PRODUCTS_QUERYResult;
     "\n        *[\n            _type == \"product\"\n            && name match $searchParam\n        ] | order(name asc)\n        ": PRODUCT_SEARCH_QUERYResult;
     "\n        *[\n            _type == \"sale\"\n            && isActive == true\n            && couponCode == $couponCode\n        ] | order(validFrom desc)[0]\n        ": Active_SALE_BY_COUPON_QUERYResult;
   }

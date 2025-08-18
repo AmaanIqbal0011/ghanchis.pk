@@ -1,19 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Size } from "../../../sanity.types";
 
-interface Size {
-  ageGroup: string;
-  chest: number;
-  fitting: string;
-  kameezLength: number;
-  name: string;
-  paienchaWidth: number;
-  shalwarLength: number;
-  shoulder: number;
-  sleevesLength: number;
-  sleevesStyle: string;
-}
+
 
 export default function ProductTabs({
   size,
@@ -73,7 +63,7 @@ export default function ProductTabs({
                   <span className="font-semibold text-gray-600">
                     Age Group:
                   </span>
-                  <span className="text-gray-800">{size?.ageGroup} Years</span>
+                  <span className="text-gray-800">{size?.ageGroup?.join(",")} Years</span>
 
                   <span className="font-semibold text-gray-600">Fitting:</span>
                   <span className="text-gray-800">{size?.fitting}</span>

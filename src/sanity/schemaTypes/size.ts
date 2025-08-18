@@ -1,5 +1,4 @@
 // schemas/size.ts
-
 import { defineType, defineField } from "sanity";
 
 export const size = defineType({
@@ -16,8 +15,9 @@ export const size = defineType({
     defineField({
       name: "ageGroup",
       title: "Recommended Age (for kids)",
-      type: "string",
+      type: "array",
       description: "e.g. 2-3 years, 4-5 years",
+      of: [{ type: "string" }],  // <-- fixed here
     }),
     defineField({
       name: "slug",
@@ -88,12 +88,26 @@ export const size = defineType({
         ],
       },
     }),
-
-    // Optional description
-    defineField({
-      name: "description",
-      title: "Notes / Description",
-      type: "text",
-    }),
   ],
+
+  preview: {
+    select: {
+      title: "name",
+      ageGroup: "ageGroup",
+      fitting: "fitting",
+      sleevesStyle: "sleevesStyle",
+    },
+    prepare({ title, ageGroup, fitting, sleevesStyle }) {
+      return {
+        title,
+        subtitle: [
+          ageGroup && ageGroup.length ? `Age: ${ageGroup.join(", ")}` : null,
+          fitting ? `Fit: ${fitting}` : null,
+          sleevesStyle ? `Sleeves: ${sleevesStyle}` : null,
+        ]
+          .filter(Boolean)
+          .join(" | "),
+      };
+    },
+  },
 });

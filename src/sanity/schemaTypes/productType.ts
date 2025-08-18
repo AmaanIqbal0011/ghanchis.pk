@@ -35,34 +35,24 @@ export const productType = defineType({
       title: "Old Price (Optional)",
     }),
     defineField({
-      name: "description",
-      title: "Description",
-      type: "text",
-      description: "Write a short description of the product",
-    }),
-    defineField({
       name: "category",
       title: "Category",
       type: "array",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "category" }],
-        },
-      ],
+      of: [{ type: "reference", to: [{ type: "category" }] }],
       validation: (Rule) =>
         Rule.required().min(1).error("At least one category is required"),
+    }),
+    defineField({
+      name: "article",
+      title: "Article",
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "article" }] }],
     }),
     defineField({
       name: "collections",
       title: "Collections",
       type: "array",
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "collectionType" }],
-        },
-      ],
+      of: [{ type: "reference", to: [{ type: "collectionType" }] }],
       validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
@@ -71,12 +61,20 @@ export const productType = defineType({
       type: "reference",
       to: [{ type: "size" }],
     }),
+
+    // Corrected color field
     defineField({
       name: "colors",
       title: "Available Colors",
       type: "array",
-      of: [{ type: "string" }],
+      of: [
+        {
+          type: "color",       // use color type directly
+          options: { disableAlpha: false }, // transparency toggle
+        },
+      ],
     }),
+
     defineField({
       name: "stock",
       type: "number",
@@ -122,9 +120,9 @@ export const productType = defineType({
     prepare(selection) {
       const { title, media, price, stock } = selection;
       return {
-        title: title,
-        subtitle: `Rs. ${price} -- stock : ${stock}`,
-        media: media,
+        title,
+        subtitle: `Rs. ${price} -- stock: ${stock}`,
+        media,
       };
     },
   },
