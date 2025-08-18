@@ -28,7 +28,7 @@ async function OrderPage({ params }: { params: Promise<{ slug: string }> }) {
           </h1>
         <span
   className={`px-3 py-1 rounded-full text-sm font-medium 
-    ${order?.status === "Completed" ? "bg-green-100 text-green-800" : 
+    ${order?.status === "completed" ? "bg-green-100 text-green-800" : 
      "bg-blue-100 text-yellow-800"}`}>
   {order?.status || "Pending"}
 </span>
