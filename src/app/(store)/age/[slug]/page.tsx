@@ -1,3 +1,4 @@
+import NoProductAvailable from "@/components/myComponents/noProductAvailable";
 import ProductView from "@/components/myComponents/productView";
 import { getAllSize } from "@/sanity/lib/products/getAllSize";
 import { getProductsByAgeGroup } from "@/sanity/lib/products/getProductByAgeGroup";
@@ -11,6 +12,11 @@ async function SizePage (
   const {slug} = await params;
   const products  = await getProductsByAgeGroup(slug)
   const size = await getAllSize()
+
+
+  if(!products || products.length === 0 ){
+    return <NoProductAvailable params={slug} />
+  }
   
 
   return (

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent, useMemo } from "react";
 import { Size } from "../../../sanity.types";
 import { useRouter } from "next/navigation";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -25,15 +25,17 @@ export function SizeSelectorComponent({ size }: SizeSelectorProps) {
   const [value, setValue] = useState<string>("");
   const router = useRouter();
 
+  // --- Deduplicate age groups ---
+  const allAges = useMemo(() => {
+    const ages = size.flatMap(s => s.ageGroup || []);
+    return Array.from(new Set(ages)); // removes duplicates
+  }, [size]);
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (e.key !== "Enter") return;
 
     const searchValue = e.currentTarget.value.toLowerCase();
-    const selectedSize = size.find((s) =>
-      s.ageGroup?.some((age : string) => age.toLowerCase().includes(searchValue))
-    );
-
-    const selectedAge = selectedSize?.ageGroup?.find((age : string) =>
+    const selectedAge = allAges.find((age) =>
       age.toLowerCase().includes(searchValue)
     );
 
@@ -72,30 +74,28 @@ export function SizeSelectorComponent({ size }: SizeSelectorProps) {
           />
           <CommandList>
             <CommandEmpty>No Age Found.</CommandEmpty>
-            {size.map((s) => (
-              <CommandGroup key={s._id} heading={s._id}>
-                {s.ageGroup?.map((age : string) => (
-                  <CommandItem
-                    key={age}
-                    value={age}
-                    onSelect={() => {
-                      setValue(age);
-                      router.push(`/age/${age}`);
-                      setOpen(false);
-                    }}
-                    className="truncate"
-                  >
-                    {age}
-                    <Check
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        value === age ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))}
+            <CommandGroup heading="Available Ages">
+              {allAges.map((age) => (
+                <CommandItem
+                  key={age}
+                  value={age}
+                  onSelect={() => {
+                    setValue(age);
+                    router.push(`/age/${age}`);
+                    setOpen(false);
+                  }}
+                  className="truncate"
+                >
+                  {age}
+                  <Check
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      value === age ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>
