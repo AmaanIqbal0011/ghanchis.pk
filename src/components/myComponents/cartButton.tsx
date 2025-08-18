@@ -30,37 +30,3 @@ const CartButton = () => {
 };
 
 export default CartButton;
-
-
-
-
-
-
-
-
-
-
-// 'use client'
-
-// import Link from "next/link";
-// import { Button } from "@/components/ui/button"; 
-// import { ShoppingCart } from "lucide-react"; 
-// import useBasketStore from "@/store/store";
-
-// const CartButton = () => {
-//    const itemCount = useBasketStore((state) =>
-//     state.items.reduce((total,item) => total + item.quantity,0)
-//   )
-//   return (
-//     <Link href="/cart">
-//       <Button variant="outline" className="flex items-center gap-2 px-3 py-2 mx-6 text-sm font-medium">
-//         <ShoppingCart className="w-4 h-4" />
-//         {itemCount}
-//         My Cart
-//       </Button>
-//     </Link>
-//   );
-// };
-
-// export default CartButton;
-

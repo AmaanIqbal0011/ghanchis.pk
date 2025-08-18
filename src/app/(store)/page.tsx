@@ -1,5 +1,6 @@
 import CategoryBanner from "@/components/myComponents/categoryBanner";
 import HeroSection from "@/components/myComponents/heroSection";
+import MarqueeBar from "@/components/myComponents/marqueeBar";
 import ProductView from "@/components/myComponents/productView";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
 import { getAllSize } from "@/sanity/lib/products/getAllSize";
@@ -18,8 +19,7 @@ export default async function Home() {
       <HeroSection />
 
       
-      <hr className="border-t border-gray-300 my-8" />
-
+<MarqueeBar />
   
  
 
