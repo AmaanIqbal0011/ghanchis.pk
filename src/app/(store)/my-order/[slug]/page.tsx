@@ -36,7 +36,7 @@ async function OrderPage({ params }: { params: Promise<{ slug: string }> }) {
         </div>
         
         <p className="text-gray-600 mb-4">
-          Placed on {new Date(order.timestamp).toLocaleString()}
+          Placed on {order.timestamp ? new Date(order.timestamp).toLocaleString() : "Unknown Date"}
         </p>
         
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
