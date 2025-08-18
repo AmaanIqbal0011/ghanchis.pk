@@ -6,6 +6,23 @@ import { sanityFetch } from "../live"
 export const getProductsByAgeGroup = async (ageGroup: string) => {
   const PRODUCT_BY_AGE = defineQuery(`
     *[_type == "product" && $ageGroup in size->ageGroup[]] {
+      _id,
+  title,
+  slug,
+  image,
+  price,
+  oldPrice,
+  description,
+  stock,
+  featured,
+  tags,
+  sku,
+  collections[]->{
+    title
+  },
+  size->{
+    name
+  }
     }
   `)
 
