@@ -12,13 +12,7 @@ export const size = defineType({
       type: "string",
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: "ageGroup",
-      title: "Recommended Age (for kids)",
-      type: "array",
-      description: "e.g. 2-3 years, 4-5 years",
-      of: [{ type: "string" }],  // <-- fixed here
-    }),
+
     defineField({
       name: "slug",
       title: "Slug",
@@ -29,8 +23,13 @@ export const size = defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
-
-    // Measurements
+    defineField({
+      name: "ageGroup",
+      title: "Recommended Age (for kids)",
+      type: "array",
+      description: "e.g. 2-3 years, 4-5 years",
+      of: [{ type: "string" }], // <-- fixed here
+    }),
     defineField({
       name: "kameezLength",
       title: "Kameez Length (inches)",
@@ -40,6 +39,19 @@ export const size = defineType({
       name: "sleevesLength",
       title: "Sleeves Length (inches)",
       type: "number",
+    }),
+    defineField({
+      name: "sleevesStyle",
+      title: "Sleeves Style (Aasteen)",
+      type: "string",
+      options: {
+        list: [
+          { title: "Goll Aasteen", value: "golla" },
+          { title: "Cuff Aasteen", value: "cuff" },
+          { title: "Straight Aasteen", value: "straight" },
+          { title: "No Sleeves", value: "none" },
+        ],
+      },
     }),
     defineField({
       name: "shoulder",
@@ -75,19 +87,6 @@ export const size = defineType({
     }),
 
     // Aasteen style
-    defineField({
-      name: "sleevesStyle",
-      title: "Sleeves Style (Aasteen)",
-      type: "string",
-      options: {
-        list: [
-          { title: "Goll Aasteen", value: "golla" },
-          { title: "Cuff Aasteen", value: "cuff" },
-          { title: "Straight Aasteen", value: "straight" },
-          { title: "No Sleeves", value: "none" },
-        ],
-      },
-    }),
   ],
 
   preview: {
