@@ -31,7 +31,7 @@ export const GetProductDetailBySlug = async (slug) => {
   },
 
   // Dereference size
-  size->{
+  size[]->{
     name,
     fitting,
     ageGroup,

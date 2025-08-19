@@ -58,8 +58,8 @@ export const productType = defineType({
     defineField({
       name: "size",
       title: "Available Sizes",
-      type: "reference",
-      to: [{ type: "size" }],
+      type: "array",
+      of: [{ type: "reference", to: [{ type: "size" }] }],
     }),
 
     // Corrected color field
