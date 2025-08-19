@@ -1,6 +1,6 @@
 import CategoryBanner from "@/components/myComponents/categoryBanner";
 import HeroSection from "@/components/myComponents/heroSection";
-import MarqueeBar from "@/components/myComponents/marqueeBar";
+import Comments from "@/components/myComponents/marqueeCommentss";
 import ProductView from "@/components/myComponents/productView";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
 import { getAllSize } from "@/sanity/lib/products/getAllSize";
@@ -15,11 +15,13 @@ export default async function Home() {
 
   return (
     <div className="container mx-auto px-4 py-2">
+     
  
       <HeroSection />
-
+    
+<Comments />
       
-<MarqueeBar />
+
   
  
 

@@ -7,7 +7,8 @@ import { collectionType } from './collectionType'
 import { salesType } from './salesType'
 import { heroSection } from './heroSection'
 import { ArticleType } from './articleType'
+import { marqueeComments } from './marqueeComments'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [productType,CategoryType,size,orderType,collectionType,salesType,heroSection,ArticleType],
+  types: [productType,CategoryType,size,orderType,collectionType,salesType,heroSection,ArticleType,marqueeComments],
 }

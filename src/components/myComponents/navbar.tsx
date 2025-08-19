@@ -30,7 +30,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-t border-gray-200 z-30">
+    <nav className="bg-white z-30">
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 items-center">
           <div className="flex flex-nowrap space-x-5" ref={dropdownRef}>
