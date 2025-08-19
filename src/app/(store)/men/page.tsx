@@ -1,6 +1,7 @@
 import ProductView from "@/components/myComponents/productView";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
 import { getAllSize } from "@/sanity/lib/products/getAllSize";
+import Link from "next/link";
 
 const MansPage = async () => {
   const products = await getAllProducts();
@@ -26,10 +27,15 @@ const MansPage = async () => {
             <h2 className="text-3xl font-semibold text-gray-800 mb-4 md:mb-0">
               Shalwar Qameez Collection
             </h2>
-            <span className="text-amber-600 font-medium">View All</span>
+            <Link
+            href={"/man/shalwar-qameez"}>
+                        <span className="text-amber-600 font-medium">View Al</span>
+
+            
+            </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ProductView products={products} size={sizes} />
+            <ProductView products={products}  />
           </div>
         </section>
 
@@ -42,7 +48,7 @@ const MansPage = async () => {
             <span className="text-amber-600 font-medium">View All</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ProductView products={products} size={sizes} />
+            <ProductView products={products}  />
           </div>
         </section>
 
@@ -55,7 +61,7 @@ const MansPage = async () => {
             <span className="text-amber-600 font-medium">Explore More</span>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <ProductView products={products.slice(0, 4)} size={sizes} />
+            <ProductView products={products.slice(0, 4)} />
           </div>
         </section>
       </div>

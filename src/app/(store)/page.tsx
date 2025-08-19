@@ -3,14 +3,12 @@ import HeroSection from "@/components/myComponents/heroSection";
 import Comments from "@/components/myComponents/marqueeCommentss";
 import ProductView from "@/components/myComponents/productView";
 import { getAllProducts } from "@/sanity/lib/products/getAllProducts";
-import { getAllSize } from "@/sanity/lib/products/getAllSize";
-
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
 export default async function Home() {
   const products = await getAllProducts();
-  const size = await getAllSize();
+
 
 
   return (
@@ -28,7 +26,7 @@ export default async function Home() {
       {/* Category Section */}
       <CategoryBanner />
 
-      <ProductView products={products} size={size} />
+      <ProductView products={products} />
     </div>
   );
 }
