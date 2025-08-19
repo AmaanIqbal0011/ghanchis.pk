@@ -13,7 +13,7 @@ function Loader() {
             <div className="ml-6 flex flex-col items-start">
                 <h1 className="text-4xl font-extrabold tracking-tight">
                     <span className="text-black">ghanchi</span>
-                    <span className="text-red-600">'s.pk</span>
+                    <span className="text-red-600">&apos;s.pk</span>
                 </h1>
                 <p className="mt-2 text-lg font-semibold bg-gradient-to-r from-yellow-600 to-yellow-400 bg-clip-text text-transparent animate-pulse">
                     The Smart Collection
